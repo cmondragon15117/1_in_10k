@@ -1,6 +1,7 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Turtlecontrol : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class Turtlecontrol : MonoBehaviour
     private float y;
     private Vector3 rotateX;
     private Vector3 rotateY;
+    private float health = 120f;
+    public Slider healthBar;
 
 
     //private int counter = 0;
@@ -27,6 +30,21 @@ public class Turtlecontrol : MonoBehaviour
         t = GetComponent<Transform>();
         splash.GetComponent<ParticleSystem>().enableEmission = false;
         rb.useGravity = true;
+        healthBar.value = 1;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Shark" || collision.gameObject.tag == "Octopus")
+            health -= (Random.Range(15, 30));
+        else if (collision.gameObject.tag == "BigShark")
+            health -= (Random.Range(30, 40));
+        else if (collision.gameObject.tag == "Fish")
+        {
+            health += (Random.Range(7, 15));
+            Destroy(collision.gameObject);
+        }
+        Debug.Log(health);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -65,7 +83,7 @@ public class Turtlecontrol : MonoBehaviour
         //Basic rotation using mouse axis
         y = Input.GetAxis("Mouse X");
         x = Input.GetAxis("Mouse Y");
-        Debug.Log(x + ":" + y);
+        //Debug.Log(x + ":" + y);
         rotateX = new Vector3(x, 0, 0);
         rotateY = new Vector3(0, y * -1, 0);
 
@@ -77,8 +95,9 @@ public class Turtlecontrol : MonoBehaviour
         else if(y > 270 || y < -270)
           transform.eulerAngles -= rotateX;
 
+        health -= 0.005f;
 
-
+        healthBar.value = (health / 100);
 
     }
 }
