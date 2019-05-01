@@ -13,6 +13,7 @@ public class Underwater : MonoBehaviour
     private Material defaultSkybox;
     private Material noSkybox;
     public Camera Cam;
+    public Camera miniMapCam;
 
     void Start()
     {
@@ -26,7 +27,13 @@ public class Underwater : MonoBehaviour
 
     void Update()
     {
-        if (transform.position.y < underwaterLevel)
+        if(miniMapCam.enabled) {
+          RenderSettings.fog = defaultFog;
+          RenderSettings.fogColor = defaultFogColor;
+          RenderSettings.fogDensity = defaultFogDensity;
+          RenderSettings.skybox = defaultSkybox;
+        }
+        else if (transform.position.y < underwaterLevel)
         {
             RenderSettings.fog = true;
             RenderSettings.fogColor = new Color(0, 0.4f, 0.7f, 0.7f);
