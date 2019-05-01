@@ -19,7 +19,8 @@ public class Turtlecontrol : MonoBehaviour
     private Vector3 rotateY;
     private float health = 120f;
     public Slider healthBar;
-
+    public static bool mouseLocked;
+    public static bool lose;
 
     //private int counter = 0;
 
@@ -31,6 +32,8 @@ public class Turtlecontrol : MonoBehaviour
         splash.GetComponent<ParticleSystem>().enableEmission = false;
         rb.useGravity = true;
         healthBar.value = 1;
+        mouseLocked = true;
+        lose = false;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -79,25 +82,28 @@ public class Turtlecontrol : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
             rb.AddForce(t.up * force);
+        if(!mouseLocked) {
+          //Basic rotation using mouse axis
+          y = Input.GetAxis("Mouse X");
+          x = Input.GetAxis("Mouse Y");
+          //Debug.Log(x + ":" + y);
+          rotateX = new Vector3(x, 0, 0);
+          rotateY = new Vector3(0, y * -1, 0);
 
-        //Basic rotation using mouse axis
-        y = Input.GetAxis("Mouse X");
-        x = Input.GetAxis("Mouse Y");
-        //Debug.Log(x + ":" + y);
-        rotateX = new Vector3(x, 0, 0);
-        rotateY = new Vector3(0, y * -1, 0);
-
-        if(!(x > 180 || x < -180) && !(y > 270 || y < -270)) {
-          transform.eulerAngles -= rotateX + rotateY;
+          if(!(x > 180 || x < -180) && !(y > 270 || y < -270)) {
+            transform.eulerAngles -= rotateX + rotateY;
+          }
+          else if(x > 180 || x < -180)
+            transform.eulerAngles -= rotateY;
+          else if(y > 270 || y < -270)
+            transform.eulerAngles -= rotateX;
         }
-        else if(x > 180 || x < -180)
-          transform.eulerAngles -= rotateY;
-        else if(y > 270 || y < -270)
-          transform.eulerAngles -= rotateX;
-
-        health -= 0.005f;
+        health -= 0.008f;
 
         healthBar.value = (health / 100);
+
+        if(health < 0)
+          lose = true;
 
     }
 }

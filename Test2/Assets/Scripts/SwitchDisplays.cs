@@ -1,16 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SwitchDisplays : MonoBehaviour {
     public Camera firstPersonCam;
     public Camera miniMapCam;
-    public Camera menuCam;
+    public Camera introCam;
+    public Camera exitCam;
+    public Canvas introCanvas;
+    public Canvas exitCanvas;
 
     void Start() {
       firstPersonCam.enabled = false;
       miniMapCam.enabled = false;
-      menuCam.enabled = true;
+      introCam.enabled = true;
+      exitCam.enabled = false;
+      exitCanvas.enabled = false;
     }
 
     // Update is called once per frame
@@ -18,22 +24,25 @@ public class SwitchDisplays : MonoBehaviour {
         if(Input.GetKeyDown(KeyCode.Return)) {
           Debug.Log("Changing views");
 
-          if(menuCam.enabled) {
+          if(introCam.enabled) {
             DisableMenu();
             firstPersonCam.enabled = true;
             miniMapCam.enabled = false;
+            Turtlecontrol.mouseLocked = false;
           }
 
           else if(firstPersonCam.enabled) {
             firstPersonCam.enabled = false;
             miniMapCam.enabled = true;
             DisableMenu();
+            Turtlecontrol.mouseLocked = true;
           }
 
           else if(miniMapCam.enabled) {
             EnableMenu();
             firstPersonCam.enabled = false;
             miniMapCam.enabled = false;
+            Turtlecontrol.mouseLocked = true;
           }
           else {
             EnableMenu();
@@ -44,9 +53,11 @@ public class SwitchDisplays : MonoBehaviour {
     }
 
     void EnableMenu() {
-      menuCam.enabled = true;
+      introCam.enabled = true;
+      introCanvas.enabled = true;
     }
     void DisableMenu() {
-      menuCam.enabled = false;
+      introCam.enabled = false;
+      introCanvas.enabled = false;
     }
 }
