@@ -47,14 +47,15 @@ public class Turtlecontrol : MonoBehaviour
             health += (Random.Range(7, 15));
             Destroy(collision.gameObject);
         }
+        else if(collision.gameObject.tag == "Trash") {
+            health -= (Random.Range(15, 20));
+            Destroy(collision.gameObject);
+        }
         Debug.Log(health);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        //if (counter % 2 == 0) rb.useGravity = false;
-        //else rb.useGravity = true;
-        //++counter;
         source.PlayOneShot(sound);
         splash.GetComponent<ParticleSystem>().enableEmission = true;
         StartCoroutine(stop());
