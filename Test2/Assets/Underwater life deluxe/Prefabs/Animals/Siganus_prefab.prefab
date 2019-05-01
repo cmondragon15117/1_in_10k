@@ -510,7 +510,7 @@ GameObject:
   - component: {fileID: 95704099017995874}
   m_Layer: 0
   m_Name: Siganus_prefab
-  m_TagString: Untagged
+  m_TagString: Fish
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
